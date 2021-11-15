@@ -18,7 +18,7 @@
 
 import React from 'react';
 
-import { Home, About, Footer, Tutor, ApplyTutor, BrowseTutor } from './components';
+import { Home, About, Footer, Tutor, ApplyTutor, Login, Registration, BrowseTutor} from './components';
 // importing member pages below
 import Member1 from './components/members/Member1';
 import Member2 from './components/members/Member2';
@@ -58,6 +58,8 @@ function App() {
                     <Route exact path="/Tutor-Dashboard" component={Tutor} />
                     <Route exact path="/Apply-Tutor" component={ApplyTutor} />
                     <Route exact path="/Browse-Tutor" component={BrowseTutor} />
+                    <Route exact path="/Registration" component={Registration} />
+                    <Route exact path="/Login" component={Login} />
                 </Switch>
                 </div>
             

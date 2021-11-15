@@ -7,10 +7,17 @@ import 'bootstrap/dist/css/bootstrap.css';
 import Button from 'react-bootstrap/Button';
 import Picture1 from './pictures/text1.png'
 import Picture2 from './pictures/text2.png'
+import BrowseTutor from './BrowseTutor.js'
 
 
 // Basic placeholder for the home/launching page
 function Home(){
+    function handleClick(e){
+        e.preventDefault();
+        console.log("button worked");
+        return <BrowseTutor/>
+    }
+
     return(
         <div className="body">
             {/*to check if footer works fine*/}
@@ -18,7 +25,7 @@ function Home(){
                 <div className="b-categories">
                 <Button variant="contained" className="browse-button">Browse by Class</Button>
                 <Button variant="contained" className="browse-button">Browse by Major</Button>
-                <Button variant="contained" className="browse-button" href="/Browse-Tutor">Browse Tutors</Button>
+                <Button variant="contained" className="browse-button" onClick={handleClick}>Browse Tutors</Button>
                 </div>
             </div>
             
