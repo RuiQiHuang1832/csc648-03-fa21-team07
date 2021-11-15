@@ -21,13 +21,13 @@ function Home(){
     return(
         <div className="body">
             {/*to check if footer works fine*/}
-            <div className="button-background">
+            {/* <div className="button-background">
                 <div className="b-categories">
                 <Button variant="contained" className="browse-button">Browse by Class</Button>
                 <Button variant="contained" className="browse-button">Browse by Major</Button>
                 <Button variant="contained" className="browse-button" onClick={handleClick}>Browse Tutors</Button>
                 </div>
-            </div>
+            </div> */}
             
             <div className="greeting">
                 Start your journey with SFSU Tutoring today: Find the tutor that is right for you!
