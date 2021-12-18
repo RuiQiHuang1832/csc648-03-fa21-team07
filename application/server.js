@@ -260,7 +260,7 @@ app.post('/tutorapply', upload.fields([ { name: 'resume' }, { name: 'photo' } ])
   console.log("Files (resume) is: ", req.files['resume']); 
   
   const photoName = req.body.email.split('@')[0] + '.jpg';
-  sql = `INSERT INTO tutors (firstName, lastName, email, courseTeaching, major, courseDescription, imageReference, resume) VALUES ('${req.body.firstName}', '${req.body.lastName}', '${req.body.email}', '${req.body.course}', '${req.body.major}', '${req.body.description}', '/public/${photoName}', '${req.files['resume']}')`; 
+  const sql = `INSERT INTO tutors (firstName, lastName, email, courseTeaching, major, courseDescription, imageReference, resume) VALUES ('${req.body.firstName}', '${req.body.lastName}', '${req.body.email}', '${req.body.course}', '${req.body.major}', '${req.body.description}', '/public/${photoName}', '${req.files['resume']}')`; 
   connection.query(sql, (error, results, fields) => {
       if(error) console.log("Error in Insert Query --/tutorapply route");
       console.log(results); 
@@ -284,6 +284,16 @@ app.post('/userPosts', (req,res) => {
 })
 
 
+app.post('/messages', (req,res) => {
+  console.log("Message is: ", req.body.message);
+  console.log("TutorId is: ", req.body.tutorId); 
+
+  const sql = `INSERT INTO messages (tutorID, messageDescription) VALUES ('${req.body.tutorId}', '${req.body.message}')`; 
+  connection.query(sql, (error, results, fields) => {
+    if(error) console.log("Error in /messages Insert Query");
+    console.log(results); 
+  })
+})
 
 
 //Creating a Listening Port
