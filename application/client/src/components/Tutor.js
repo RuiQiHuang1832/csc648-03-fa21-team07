@@ -1,73 +1,92 @@
+/*
+File: The tutor dashboard
+Worked on by: Rui Qi Huang
+Purpose: allows tutor to view messages form students
+*/
 
-import './Tutor.css';
-import Picture from './pictures/math-teacher-vector.png'
-import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap/dist/js/bootstrap.bundle';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import 'bootstrap/dist/js/bootstrap.js';
-import React from "react";
-
+import "./Tutor.css";
+import React, { useContext, useState, useEffect } from "react";
+import { AppContext } from "../AppContext";
 
 function Tutor() {
+  const loggedInUser = useContext(AppContext);
 
-    return (
-        <div class="container rounded bg-white mt-5 mb-5">
-            <div class="row">
-                <div class="col-md-3 border-right">
-                    <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img className="rounded-circle img-thumbnail mt-5 border border-success" width="200px" src={Picture}></img>
-                        <span className="font-weight-bold text-lowercase">Name: Michael </span>
-                        <span className="text-lowercase text-black-50">Email: michael@gmail.com </span>
-                        <span className="text-lowercase text-black-50">Schedule: 10am-2pm Thurs-Fri </span>
-                    </div>
-                </div>
-                <div class="col-md-5 border-right">
-                    <div class="p-3 py-5">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h4 class="text-right">Tutor Dashboard</h4>
-                        </div>
+  const allmessages = []; 
+
+  const [messages, setMessages] = useState([]);
+  const [listMessages, setlistMessages] = useState([]); 
+  useEffect(async () => {
+    console.log("LoggedInUser: ", loggedInUser); 
+    const email = loggedInUser.loggedInUser.email; 
+    const response = await fetch('/isTutor', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+
+    const json = await response.json(); 
+    const tutorId = json.tutorId; 
 
 
+    const response2 = await fetch(`/getmessages?param1=${tutorId}`, {
+      method: 'GET',
+      headers: {
+        "Content-type": 'application/json'
+      }
+    })
 
+    const json1 = await response2.json();
+    for(var i = 0; i < json1.length; i++) {
+      allmessages.push(json1[i].messageDescription);
+    }
 
-                        <div class="row mt-2">
-                            <div class="col-md-10">Message Students &ensp;
+    setMessages(allmessages); 
+    console.log(messages);  
 
-                                <div className="dropdown d-inline-block">
-                                    <button className="btn btn-success dropdown-toggle" type="button"
-                                            id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Students
-                                    </button>
-                                    <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                        <li><a className="dropdown-item" href="#">Michael</a></li>
-                                        <li><a className="dropdown-item" href="#">Billy</a></li>
-                                        <li><a className="dropdown-item" href="#">John</a></li>
-                                    </ul>
-                                </div>
+  }, []);
 
-                                <textarea id="messageStudent" type="text" class="form-control"  placeholder="Send Message.."/>
-                            </div>
-
-                        </div>
-                        <button class="btn btn-primary profile-button" type="button">Send </button> <span></span>
-                        <button className="btn btn-primary profile-button" type="button">Upload Documents</button>
-
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="p-3 py-5">
-                        {/*<div class="d-flex justify-content-between align-items-center experience"><span>Edit Experience</span><span class="border px-3 p-1 add-experience"><i class="fa fa-plus"></i>&nbsp;Experience</span></div>*/}
-                        {/*<div class="col-md-12"><label class="labels">Experience in Designing</label><input type="text" class="form-control" placeholder="experience" value=""/></div>*/}
-                        {/*<div class="col-md-12"><label class="labels">Additional Details</label><input type="text" class="form-control" placeholder="additional details" value=""/></div>*/}
-
-                    </div>
-                </div>
+  return (
+    <div className="container">
+      <h4 class="text-right">Hello, {loggedInUser.loggedInUser.firstName}</h4>
+      <div className="row">
+        <div className="col-md-12">
+          <div className="card">
+            <div
+              id="dashboard"
+              className="card-body bg-info text-white mailbox-widget pb-0"
+            >
+              <h2 className="text-white pb-3">Dashboard</h2>
             </div>
-
-
+            <div className="tab-content" id="myTabContent">
+              <div
+                className="tab-pane fade active show"
+                id="inbox"
+                aria-labelledby="inbox-tab"
+                role="tabpanel"
+              >
+                <div>
+                  <div className="row p-4 no-gutters align-items-center">
+                    <div className="col-sm-12 col-md-6">
+                      <h3 className="font-light mb-0">
+                        <i className="ti-email mr-2" />
+                        Inbox
+                      </h3>
+                    </div>
+                  <div className="table-responsive">
+                    <table className="table email-table no-wrap table-hover v-middle mb-0 font-14">
+                        {messages.map((mess) => <li>{mess}</li>)}
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-
-
-    );
+      </div>
+    </div>
+    </div>
+  );
 }
 
 export default Tutor;
